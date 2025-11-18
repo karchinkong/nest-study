@@ -9,8 +9,8 @@ export class SseController implements OnModuleDestroy {
   @Sse('events')
   sseEvents() {
     return new Observable((observer) => {
-
       const eventHandler = (data: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         observer.next({ data });
       };
 

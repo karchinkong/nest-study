@@ -4,6 +4,7 @@ import { In, Repository } from 'typeorm';
 import { Article } from '@/modules/articles/entities/article.entity';
 import { CreateArticleDto } from '@/modules/articles/dto/create.dto';
 import { Tags } from '@/modules/tags/entities/tags.entity';
+import { ArticleViewsService } from '@/modules/article-views/article-views.service';
 
 @Injectable()
 export class ArticlesService {
@@ -12,6 +13,7 @@ export class ArticlesService {
     private articleRepository: Repository<Article>,
     @InjectRepository(Tags)
     private tagsRepository: Repository<Tags>,
+    private articleViewsService: ArticleViewsService,
   ) {}
 
   // 获取所有文章
@@ -21,7 +23,12 @@ export class ArticlesService {
     });
   }
 
-  async getArticleById(articleId: string) {
+  async getArticleById(articleId: string, userId?: string | null) {
+    // 记录浏览量（异步执行，不阻塞返回）
+    this.articleViewsService.recordView(articleId, userId).catch((err) => {
+      console.error('记录浏览量失败:', err);
+    });
+
     return await this.articleRepository.findOne({
       where: {
         id: articleId,

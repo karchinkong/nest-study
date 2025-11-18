@@ -13,6 +13,7 @@ import { Tags } from '@/modules/tags/entities/tags.entity';
 import { Categories } from '@/modules/categories/entities/categories.entity';
 import { ArticleLikes } from '@/modules/article-likes/entities/article-likes.entity';
 import { ArticleFavorites } from '@/modules/article-favorites/entities/article-favorites.entity';
+import { ArticleViews } from '@/modules/article-views/entities/article-views.entity';
 
 @Entity('articles')
 export class Article extends BaseEntity {
@@ -52,4 +53,10 @@ export class Article extends BaseEntity {
 
   @OneToMany(() => ArticleFavorites, (favorite) => favorite.article)
   favorites: ArticleFavorites[];
+
+  @Column({ default: 0 })
+  viewCount: number;
+
+  @OneToMany(() => ArticleViews, (view) => view.article)
+  views: ArticleViews[];
 }

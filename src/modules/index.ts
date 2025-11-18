@@ -9,6 +9,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { ArticleLikesModule } from './article-likes/article-likes.module';
 import { SseModule } from './sse/sse.module';
 import { ArticleFavoritesModule } from './article-favorites/article-favorites.module';
+import { ArticleViewsModule } from './article-views/article-views.module';
 
 export const modules = [
   UsersModule,
@@ -21,5 +22,6 @@ export const modules = [
   CategoriesModule,
   ArticleLikesModule,
   ArticleFavoritesModule,
+  ArticleViewsModule,
   SseModule,
 ];

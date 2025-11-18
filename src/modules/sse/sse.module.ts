@@ -4,9 +4,7 @@ import { SseService } from './sse.service';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
-  imports: [
-    EventEmitterModule.forRoot()
-  ],
+  imports: [EventEmitterModule.forRoot()],
   controllers: [SseController],
   providers: [SseService],
   exports: [SseService],

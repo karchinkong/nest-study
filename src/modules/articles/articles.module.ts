@@ -6,12 +6,16 @@ import { Article } from '@/modules/articles/entities/article.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tags } from '@/modules/tags/entities/tags.entity';
 import { ArticleLikes } from '@/modules/article-likes/entities/article-likes.entity';
+import { ArticleViews } from '@/modules/article-views/entities/article-views.entity';
+import { ArticleViewsService } from '@/modules/article-views/article-views.service';
 import { SseService } from '@/modules/sse/sse.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Article, ArticleLikes, User, Tags])],
+  imports: [
+    TypeOrmModule.forFeature([Article, ArticleLikes, ArticleViews, User, Tags]),
+  ],
   controllers: [ArticlesController],
-  providers: [ArticlesService, SseService],
+  providers: [ArticlesService, ArticleViewsService, SseService],
   exports: [ArticlesService],
 })
 export class ArticlesModule {}
