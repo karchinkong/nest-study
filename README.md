@@ -5,7 +5,7 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">一个基于NestJs实现的聊天应用<p align="center">
+  <p align="center">一个基于NestJs实现的试手项目<p align="center">
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
@@ -25,10 +25,13 @@
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Todo
-| 完成 | 待办事项            |
-|------|-----------------|
-|      | 通过WebSocket分发信息 |
-|      | 记录消息/会话功能       |
-| ✓     | 用户功能            |
-| ✓    | 接入JWT鉴权         |
 
+| 完成  | 待办事项            |
+|------|--------------------|
+| ✓    | 用户功能            |
+| ✓    | 接入JWT鉴权         |
+| ✓    | 文章功能            |
+| ✓    | 点赞功能            |
+| ✓    | 收藏功能            |
+| ✓    | 个人文章浏览量记录    |
+|      | 文章评论功能(带回复)  |

@@ -8,6 +8,10 @@ import { generateRedisKeyByUserId } from '@/shared/utils';
 import { JwtPayload } from '@/modules/auth/strategies/jwt-auth.strategy';
 import Redis from 'ioredis';
 
+/**
+ * 刷新Token服务
+ * 处理JWT Token的创建和删除，管理Redis中的token存储
+ */
 @Injectable()
 export class RefreshTokenService {
   constructor(
@@ -17,6 +21,11 @@ export class RefreshTokenService {
     private readonly jwtService: JwtService,
   ) {}
 
+  /**
+   * 创建JWT Token
+   * @param user 用户对象
+   * @returns 返回accessToken和过期时间
+   */
   async create(user: User) {
     const payload: JwtPayload = {
       id: user.id,
@@ -38,6 +47,10 @@ export class RefreshTokenService {
     return { accessToken, accessExpiresAt };
   }
 
+  /**
+   * 删除token（登出）
+   * @param token JWT token
+   */
   async remove(token: string) {
     const data: JwtPayload = this.jwtService.decode(token);
     const redisKey = generateRedisKeyByUserId(data.id);

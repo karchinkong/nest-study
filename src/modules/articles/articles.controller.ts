@@ -5,12 +5,14 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { ArticlesService } from '@/modules/articles/articles.service';
 import { GetUser } from '@/common/decorators/get-user.decorator';
 import { User } from '@/modules/users/entities';
 import { CreateArticleDto } from '@/modules/articles/dto/create.dto';
+import { PaginationDto } from '@/shared/dto/pagination.dto';
 import { SseService } from '@/modules/sse/sse.service';
 import { ApiOperation } from '@nestjs/swagger';
 import type { Request } from 'express';
@@ -27,8 +29,11 @@ export class ArticlesController {
     summary: '获取所有文章',
   })
   @Get()
-  getAllArticles() {
-    return this.articlesService.getAllArticles();
+  getAllArticles(@Query() paginationDto: PaginationDto) {
+    return this.articlesService.getAllArticles(
+      paginationDto.page,
+      paginationDto.pageSize,
+    );
   }
 
   @ApiOperation({
@@ -50,8 +55,15 @@ export class ArticlesController {
     summary: '获取某个作者的所有文章',
   })
   @Get('/author/:userId')
-  getArticleByAuthor(@Param('userId') userId: string) {
-    return this.articlesService.getArticleByAuthorId(userId);
+  getArticleByAuthor(
+    @Param('userId') userId: string,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.articlesService.getArticleByAuthorId(
+      userId,
+      paginationDto.page,
+      paginationDto.pageSize,
+    );
   }
 
   @ApiOperation({

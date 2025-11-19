@@ -8,6 +8,7 @@ export interface DailyViewsByAuthorResult {
   date: Date;
   viewCount: string;
   articleCount: string;
+  authorNickName: string;
 }
 
 export interface DailyViewsByArticleResult {
@@ -61,11 +62,13 @@ export class ArticleViewsService {
     const queryBuilder = this.articleViewsRepository
       .createQueryBuilder('view')
       .innerJoin('view.article', 'article')
+      .innerJoin('article.author', 'author')
       .where('article.authorId = :authorId', { authorId })
       .select('DATE(view.createAt)', 'date')
+      .addSelect('author.nickname', 'authorNickName')
       .addSelect('COUNT(view.id)', 'viewCount')
       .addSelect('COUNT(DISTINCT view.articlesId)', 'articleCount')
-      .groupBy('DATE(view.createAt)')
+      .groupBy('DATE(view.createAt), nickname')
       .orderBy('date', 'DESC');
 
     if (startDate) {
@@ -101,7 +104,6 @@ export class ArticleViewsService {
     const queryBuilder = this.articleViewsRepository
       .createQueryBuilder('view')
       .innerJoin('view.article', 'article')
-      .where('article.authorId = :authorId', { authorId })
       .select('DATE(view.createAt)', 'date')
       .addSelect('view.articlesId', 'articleId')
       .addSelect('article.title', 'articleTitle')
@@ -111,6 +113,10 @@ export class ArticleViewsService {
       .addGroupBy('article.title')
       .orderBy('date', 'DESC')
       .addOrderBy('COUNT(view.id)', 'DESC');
+
+    if (authorId) {
+      queryBuilder.where('article.authorId = :authorId', { authorId });
+    }
 
     if (articleId) {
       queryBuilder.andWhere('view.articlesId = :articleId', { articleId });

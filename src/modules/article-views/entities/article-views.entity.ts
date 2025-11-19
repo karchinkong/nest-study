@@ -15,7 +15,7 @@ export class ArticleViews extends BaseEntity {
   @Column({ name: 'articles_id' })
   articlesId: string;
 
-  @ManyToOne(() => Article)
+  @ManyToOne(() => Article, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'articles_id' })
   article: Article;
 }

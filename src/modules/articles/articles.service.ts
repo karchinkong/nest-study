@@ -16,11 +16,26 @@ export class ArticlesService {
     private articleViewsService: ArticleViewsService,
   ) {}
 
-  // 获取所有文章
-  async getAllArticles() {
-    return await this.articleRepository.find({
+  // 获取所有文章（支持分页）
+  async getAllArticles(page: number = 1, pageSize: number = 10) {
+    const skip = (page - 1) * pageSize;
+
+    const [articles, total] = await this.articleRepository.findAndCount({
       relations: ['author', 'tags', 'category', 'likes', 'favorites'],
+      skip,
+      take: pageSize,
+      order: {
+        createAt: 'DESC',
+      },
     });
+
+    return {
+      data: articles,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
   }
 
   async getArticleById(articleId: string, userId?: string | null) {
@@ -37,13 +52,29 @@ export class ArticlesService {
     });
   }
 
-  async getArticleByAuthorId(authorId: string) {
-    return await this.articleRepository.find({
+  async getArticleByAuthorId(
+    authorId: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ) {
+    const skip = (page - 1) * pageSize;
+
+    const [articles, total] = await this.articleRepository.findAndCount({
       where: {
         authorId,
       },
+      take: pageSize,
+      skip,
       relations: ['author', 'tags', 'category', 'likes', 'favorites'],
     });
+
+    return {
+      data: articles,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
   }
 
   // 发表文章

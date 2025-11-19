@@ -10,6 +10,10 @@ import { UserExceptionCode } from '@/common/exceptions/modules/user.exception';
 import { FriendShipsExceptionCode } from '@/common/exceptions/modules/friendships.exception';
 import { UpdateFriendshipDto } from '@/modules/friendships/dto/update-friendship.dto';
 
+/**
+ * 好友关系服务
+ * 处理用户之间的好友关系管理
+ */
 @Injectable()
 export class FriendshipsService {
   constructor(
@@ -19,6 +23,11 @@ export class FriendshipsService {
     private readonly userRepository: Repository<User>,
   ) {}
 
+  /**
+   * 获取用户的所有好友
+   * @param userId 用户ID
+   * @returns 好友列表
+   */
   async getAllFriendships(userId: string) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
@@ -46,27 +55,33 @@ export class FriendshipsService {
     });
   }
 
-  // 接受好友申请
+  /**
+   * 更新好友关系状态（接受/拒绝好友申请）
+   * @param updateFriendshipDto 更新好友关系DTO
+   * @returns 更新后的好友关系
+   */
   async updateFriendshipStatus(updateFriendshipDto: UpdateFriendshipDto) {
     const r = await this.friendShipsRepository.find({
       where: {
         id: updateFriendshipDto.id,
-      }
+      },
     });
 
     if (!r) {
       throw new ErrorException(FriendShipsExceptionCode.NOT_EXIST);
     }
 
-    return await this.friendShipsRepository.save(
-      {
-        ...r,
-        ...updateFriendshipDto
-      }
-    );
+    return await this.friendShipsRepository.save({
+      ...r,
+      ...updateFriendshipDto,
+    });
   }
 
-  // 发送好友申请
+  /**
+   * 发送好友申请
+   * @param createFriendshipDto 创建好友关系DTO
+   * @returns 新创建的好友关系
+   */
   async createFriendShip(createFriendshipDto: CreateFriendshipDto) {
     const { requesterId, addresseeId } = createFriendshipDto;
 

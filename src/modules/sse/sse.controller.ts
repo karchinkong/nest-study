@@ -1,11 +1,17 @@
 import { Controller, Sse, OnModuleDestroy } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ApiOperation } from '@nestjs/swagger';
 
+/**
+ * SSE（Server-Sent Events）控制器
+ * 提供服务端向客户端实时推送事件的能力
+ */
 @Controller('sse')
 export class SseController implements OnModuleDestroy {
   constructor(private readonly eventEmitter: EventEmitter2) {}
 
+  @ApiOperation({ summary: 'SSE事件流连接' })
   @Sse('events')
   sseEvents() {
     return new Observable((observer) => {
@@ -23,5 +29,8 @@ export class SseController implements OnModuleDestroy {
     });
   }
 
+  /**
+   * 模块销毁时调用
+   */
   onModuleDestroy() {}
 }

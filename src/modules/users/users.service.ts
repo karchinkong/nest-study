@@ -8,12 +8,21 @@ import { ErrorException } from '@/common/exceptions/error.exception';
 import { UserExceptionCode } from '@/common/exceptions/modules/user.exception';
 import { UpdatePasswordDto } from '@/modules/users/dto/update-password.dto';
 
+/**
+ * 用户服务
+ * 处理用户管理相关的业务逻辑
+ */
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
+  /**
+   * 创建新用户
+   * @param createUserDto 创建用户DTO
+   * @returns 新创建用户的ID
+   */
   async create(createUserDto: CreateUserDto) {
     const isExist = await this.userRepository.exists({
       where: [
@@ -35,10 +44,19 @@ export class UsersService {
     return savedUser.id;
   }
 
+  /**
+   * 查询所有用户
+   * @returns 用户列表
+   */
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
+  /**
+   * 根据条件查询单个用户
+   * @param criteria 查询条件
+   * @returns 用户对象
+   */
   async findOne(criteria: FindOptionsWhere<User>) {
     const user = await this.userRepository.findOne({
       where: criteria,
